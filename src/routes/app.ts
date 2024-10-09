@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import AnalysisController from "../controllers/analysisController";
-import { IAnalysisOutput } from "../models/AnalysisOutput";
+import { ICodeReview } from "../models/CodeReview";
 import mongoose from "mongoose";
 import { connectionString } from "../config";
 
@@ -20,7 +20,12 @@ const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(cors());
 
-app.get("/analysis", async (req, res) => {
+
+app.get("/codeReviewT", async (req, res) => {
+  console.log("oi");
+})
+
+app.get("/codeReview", async (req, res) => {
   const owner = req.query.owner as string;
   const repo = req.query.repo as string;
   const pull_number = req.query.pull_number as string;
@@ -50,15 +55,16 @@ app.get("/analysis", async (req, res) => {
   }
 });
 
-app.post("/analysis", async (req, res) => {
-  if (!req.body.analysis) return res.status(400).send("Bad request: analysis not provided");
+app.post("/codeReview", async (req, res) => {
+  if (!req.body.codeReview) return res.status(400).send("Bad request: analysis not provided");
+  console.log("post aqui");
 
-  const analysis: IAnalysisOutput = req.body.analysis;
+  const codeReview: ICodeReview = req.body.codeReview;
 
   try {
     const createdAnalysis = await analysisController
-      .createAnalysis(analysis)
-      .then((analysis) => JSON.stringify(analysis));
+      .createAnalysis(codeReview)
+      .then((codeReview) => JSON.stringify(codeReview));
 
     res.send(createdAnalysis);
   } catch (error) {
@@ -67,10 +73,10 @@ app.post("/analysis", async (req, res) => {
   }
 });
 
-app.put("/analysis", async (req, res) => {
+app.put("/codeReview", async (req, res) => {
   if (!req.body.analysis) return res.status(400).send("Bad request: analysis not provided");
 
-  const analysis: IAnalysisOutput = req.body.analysis;
+  const analysis: ICodeReview = req.body.analysis;
 
   try {
     const updatedAnalysis = await analysisController
@@ -84,7 +90,7 @@ app.put("/analysis", async (req, res) => {
   }
 });
 
-app.delete("/analysis", async (req, res) => {
+app.delete("/codeReview", async (req, res) => {
   const owner = req.query.owner as string;
   const repo = req.query.repo as string;
   const pull_number = req.query.pull_number as string;

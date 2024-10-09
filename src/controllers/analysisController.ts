@@ -1,44 +1,44 @@
 import { persistenceType } from "../config";
-import { AnalysisOutputMongoRepository, AnalysisOutputRepository } from "../data/AnalysisOutputRepository";
-import { AnalysisOutput, IAnalysisOutput } from "../models/AnalysisOutput";
+import { CodeReviewMongoRepository, CodeReviewRepository } from "../data/CodeReviewRepository";
+import { CodeReview, ICodeReview } from "../models/CodeReview";
 
-let analysisOutputRepository: AnalysisOutputRepository =
-  persistenceType === "mongo" ? new AnalysisOutputMongoRepository() : new AnalysisOutputMongoRepository();
+let analysisOutputRepository: CodeReviewRepository =
+  persistenceType === "mongo" ? new CodeReviewMongoRepository() : new CodeReviewMongoRepository();
 
 interface IAnalysisController {
-  getAnalysis: (repo: string, owner: string, pull_number: number) => Promise<AnalysisOutput | null>;
-  getAllAnalysisFromRepo: (repo: string, owner: string) => Promise<AnalysisOutput[]>;
-  getAllAnalysisFromOwner: (owner: string) => Promise<AnalysisOutput[]>;
-  createAnalysis: (analysis: IAnalysisOutput) => Promise<AnalysisOutput>;
-  updateAnalysis: (analysis: IAnalysisOutput) => Promise<AnalysisOutput>;
+  getAnalysis: (repo: string, owner: string, pull_number: number) => Promise<CodeReview | null>;
+  getAllAnalysisFromRepo: (repo: string, owner: string) => Promise<CodeReview[]>;
+  getAllAnalysisFromOwner: (owner: string) => Promise<CodeReview[]>;
+  createAnalysis: (analysis: ICodeReview) => Promise<CodeReview>;
+  updateAnalysis: (analysis: ICodeReview) => Promise<CodeReview>;
   deleteAnalysis: (repo: string, owner: string, pull_number: number) => Promise<void>;
 }
 
 class AnalysisController implements IAnalysisController {
-  async getAnalysis(repo: string, owner: string, pull_number: number): Promise<AnalysisOutput | null> {
-    return await analysisOutputRepository.getAnalysisOutput(repo, owner, pull_number);
+  async getAnalysis(repo: string, owner: string, pull_number: number): Promise<CodeReview | null> {
+    return await analysisOutputRepository.getCodeReview(repo, owner, pull_number);
   }
 
-  async getAllAnalysisFromRepo(repo: string, owner: string): Promise<AnalysisOutput[]> {
+  async getAllAnalysisFromRepo(repo: string, owner: string): Promise<CodeReview[]> {
     return await analysisOutputRepository.listAllAnalysisFromRepo(repo, owner);
   }
 
-  async getAllAnalysisFromOwner(owner: string): Promise<AnalysisOutput[]> {
+  async getAllAnalysisFromOwner(owner: string): Promise<CodeReview[]> {
     return await analysisOutputRepository.listAllAnalysisFromOwner(owner);
   }
 
-  async createAnalysis(analysis: IAnalysisOutput): Promise<AnalysisOutput> {
-    const newAnalysis = new AnalysisOutput(analysis);
-    return await analysisOutputRepository.createAnalysisOutput(newAnalysis);
+  async createAnalysis(analysis: ICodeReview): Promise<CodeReview> {
+    const newAnalysis = new CodeReview(analysis);
+    return await analysisOutputRepository.createCodeReview(newAnalysis);
   }
 
-  async updateAnalysis(analysis: IAnalysisOutput): Promise<AnalysisOutput> {
-    const newAnalysis = new AnalysisOutput(analysis);
-    return await analysisOutputRepository.updateAnalysisOutput(newAnalysis);
+  async updateAnalysis(analysis: ICodeReview): Promise<CodeReview> {
+    const newAnalysis = new CodeReview(analysis);
+    return await analysisOutputRepository.updateCodeReview(newAnalysis);
   }
 
   async deleteAnalysis(repo: string, owner: string, pull_number: number): Promise<void> {
-    return await analysisOutputRepository.deleteAnalysisOutput(repo, owner, pull_number);
+    return await analysisOutputRepository.deleteCodeReview(repo, owner, pull_number);
   }
 }
 
