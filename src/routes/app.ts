@@ -5,7 +5,7 @@ import { ICodeReview } from "../models/CodeReview";
 import mongoose from "mongoose";
 import { connectionString } from "../config";
 
-// Database connection
+// criando conexão com o banco de dados
 mongoose.connect(connectionString, {
   dbName: "analysisOutputs"
 });
